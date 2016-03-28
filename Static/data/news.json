@@ -1,0 +1,80 @@
+﻿{
+    "full": {
+		"img": "./img/news_full.png",
+		"title": "Triển lãm du học THPT nội trú lớn nhất hàng năm của AMVNX",
+		"date": "Thứ tư, 30/12/2015",
+		"description": "Đến với Triển lãm THPT Nội trú Mỹ AMVNX 2015, các em sẽ tìm được rất nhiều thông tin bổ ích về cơ hội học tập tại các quốc gia có nền giáo dục hàng đầu thế giới."
+	},
+	"halfBigOne": {
+		"img": "./img/new_half_big.png",
+		"title": "Hướng đi của học sinh, sinh viên Mỹ khác Việt Nam ra sao",
+		"date": "Thứ tư, 30/12/2015"
+	},
+	"halfBigTwo": {
+		"img": "./img/new_half_big2.png",
+		"title": "Hướng đi của học sinh, sinh viên Mỹ khác Việt Nam ra sao",
+		"date": "Thứ tư, 30/12/2015"
+	},
+	"halfMediumOne": {
+		"img": "./img/news_medium1.png",
+		"title": "Hướng đi của học sinh, sinh viên Mỹ khác Việt Nam ra sao",
+		"date": "Thứ tư, 30/12/2015"
+	},
+	"halfMediumTwo": {
+		"img": "./img/news_medium2.png",
+		"title": "Hướng đi của học sinh, sinh viên Mỹ khác Việt Nam ra sao",
+		"date": "Thứ tư, 30/12/2015"
+	},
+	"halfMediumThree": {
+		"img": "./img/news_medium3.png",
+		"title": "Hướng đi của học sinh, sinh viên Mỹ khác Việt Nam ra sao",
+		"date": "Thứ tư, 30/12/2015"
+	},
+	"halfMediumFour": {
+		"img": "./img/news_medium4.png",
+		"title": "Hướng đi của học sinh, sinh viên Mỹ khác Việt Nam ra sao",
+		"date": "Thứ tư, 30/12/2015"
+	},
+	"halfSmallOne": {
+		"img": "./img/news_small_one.png",
+		"title": "Lời khuyên cho sinh viên đang chán ngành học"
+	},
+	"halfSmallTwo": {
+		"img": "./img/news_small_two.png",
+		"title": "Cái Tết an lành của du học sinh Việt trên đất Nga"
+	},
+	"educationOne":{
+		"img": "./img/news_education1.png",
+		"title": "Hội trợ Giáng Sinh của học sinh trường Lômônôxốp"
+	},
+	"educationTwo":{
+		"img": "./img/news_education2.png",
+		"title": "Văn hóa Mỹ - không phải \"du học sinh\" nào cũng đối mặt được"
+	},
+	"educationThree":{
+		"img": "./img/news_education3.png",
+		"title": "7 điều tuyệt vời khi học trong một lớp học \"thiếu nam\""
+	},
+	"educationFour":{
+		"img": "./img/news_education4.png",
+		"title": "Hướng đi của học sinh, sinh viên Mỹ khác Việt Nam ra sao"
+	},
+
+	"adsOne": {
+		"img": "./img/body_ads.png"
+	},
+
+	"adsTwo": {
+		"img": "./img/body_ads2.png"
+	},
+
+	"buttonOne":{
+		"text": "Tuyển sinh"
+	},
+	"buttonTwo":{
+		"text": "Tư vấn du học"
+	},
+	"buttonThree":{
+		"text": "Chuyện của du học sinh"
+	}
+}

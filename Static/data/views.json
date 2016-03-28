@@ -1,0 +1,8 @@
+﻿{
+    "paths": [
+        { "id": "Home Page", "path": "home.html" },
+		{ "id": "Category Level 1", "path": "category_level1.html" },
+		{ "id": "Category Level 2", "path": "category_level2.html" },
+		{ "id": "News Detail", "path": "news-detail.html" }
+    ]
+}
