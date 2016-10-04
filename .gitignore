@@ -1,11 +1,11 @@
 #Grunt
-node_modules/
+**/node_modules/
 
 #Bower
-bower_components/
+**/bower_components/
 
 #Compiled
-Static/**/compiled
+**/compiled
 
 #OS junk files
 [Tt]humbs.db
