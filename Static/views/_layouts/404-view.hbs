@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+
+    <meta charset="utf-8">
+
+    <title>Website Name | {{ title }}</title>
+
+    <meta property="og:title" content="Website Name" />
+    <meta property="og:type" content="" />
+    <meta property="og:url" content="http://www.website.com" />
+    <meta property="og:site_name" content="website.com" />
+    <meta property="og:description" content="Website" />
+
+    <meta name="author" content="" />
+    <meta name="description" content="" />
+
+    <link rel="canonical" href="http://www.website.com" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />
+
+    <link href="css/screen.css" rel="stylesheet" media="screen" />
+    <link href="css/print.css" rel="stylesheet" media="print" />
+    <script type="text/javascript">
+        WebFontConfig = {
+            google: { families: ['Lato:400,100,100italic,300,300italic,400italic,700,700italic,900,900italic:latin,latin-ext'] }
+        };
+        (function () {
+            var wf = document.createElement('script');
+            wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+              '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+            wf.type = 'text/javascript';
+            wf.async = 'true';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(wf, s);
+        })(); </script>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script>
+        var dataLayer = [];
+    </script>
+</head>
+
+<body class="body-404">
+    <!-- Google Tag Manager -->
+    <noscript>
+        <iframe src="http://www.googletagmanager.com/ns.html?id=GTM-KD2CQZ"
+                height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <script>
+        (function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+            'http://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-KD2CQZ');</script>
+    <!-- End Google Tag Manager -->
+    <div class="page-wrapper-content page-wrapper__404">
+        {{> body }}
+    </div>
+</body>
+
+</html>

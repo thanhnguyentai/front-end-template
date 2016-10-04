@@ -1,7 +1,7 @@
 {
-    "name": "event-website",
+    "name": "website-template",
     "version": "1.0.0",
-    "author": "thanh nguyen tai",
+    "author": "",
     "dependencies": { },
     "devDependencies": {
         "almond": "^0.3.0",

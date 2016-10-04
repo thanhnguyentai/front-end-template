@@ -16,7 +16,7 @@ module.exports = function (grunt) {
             options: {
                 layoutdir: '<%= project.dirs.views.layouts %>',
                 partials: '<%= project.dirs.views.partials %>/**/*.hbs',
-                plugins: ['handlebars-helpers'],
+                // plugins: ['handlebars-helpers'],
                 data: '<%= project.dirs.base %>/data/**/*.json'
             },
             static: {
@@ -25,7 +25,7 @@ module.exports = function (grunt) {
                 },
                 files: [{
                     cwd: '<%= project.dirs.base %>',
-                    dest: '<%= project.dirs.static.root %>',
+                    dest: '<%= project.dirs.static.main %>',
                     expand: true,
                     src: ['index.hbs']
                 }]
@@ -36,11 +36,41 @@ module.exports = function (grunt) {
                 },
                 files: [{
                     cwd: '<%= project.dirs.views.main %>',
-                    dest: '<%= project.dirs.static.root %>',
+                    dest: '<%= project.dirs.static.main %>',
                     expand: true,
                     src: [
 						'*.hbs',
-						'!_*'
+						'!_*',
+                        '!404*.hbs'
+                    ]
+                }]
+            },
+            404: {
+                options: {
+                    layout: '404-view.hbs'
+                },
+                files: [{
+                    cwd: '<%= project.dirs.views.main %>',
+                    dest: '<%= project.dirs.static.main %>',
+                    expand: true,
+                    src: [
+						'404.hbs'
+                    ]
+                }]
+            },
+            partials: {
+                options: {
+                    layout: 'component.hbs'
+                },
+                files: [{
+                    flatten: true,
+                    cwd: '<%= project.dirs.views.partials %>',
+                    dest: '<%= project.dirs.static.partials %>',
+                    expand: true,
+                    src: [
+						'**/*.hbs',
+						'!**/_*',
+						'!**/precompile/**'
                     ]
                 }]
             }
@@ -49,7 +79,7 @@ module.exports = function (grunt) {
         autoprefixer: {
             screen: {
                 options: {
-                    browsers: ['last 2 version']
+                    browsers: ['last 2 versions', 'ie 9']
                 },
                 src: '<%= project.dirs.styles.out %>/<%= project.stylesheets.screen %>',
                 dest: '<%= project.dirs.styles.out %>/<%= project.stylesheets.screen %>'
@@ -71,13 +101,12 @@ module.exports = function (grunt) {
                     '<%= project.dirs.scripts.bower %>/underscore.js': 'underscore/underscore.js',
                     '<%= project.dirs.scripts.bower %>/fastclick.js': 'fastclick/lib/fastclick.js',
                     '<%= project.dirs.scripts.bower %>/backbone.js': 'backbone/backbone.js',
-                    '<%= project.dirs.scripts.bower %>/picturefill.js': 'picturefill/src/picturefill.js',
-                    '<%= project.dirs.scripts.bower %>/history.js': 'history.js/scripts/bundled-uncompressed/html5/jquery.history.js'
+                    '<%= project.dirs.scripts.bower %>/picturefill.js': 'picturefill/src/picturefill.js'
                 }
             },
             fallbacks: {
                 files: {
-                    '<%= project.dirs.scripts.out %>/jquery.js': 'jquery/dist/jquery.js'
+                    //'<%= project.dirs.scripts.out %>/jquery.js': 'jquery/dist/jquery.js'
                 }
             }
         },
@@ -97,7 +126,7 @@ module.exports = function (grunt) {
                     expand: true,
                     cwd: '<%= project.dirs.styles.main %>',
                     src: ['*.scss'],
-                    dest: '<%= project.dirs.styles.out %>',
+                    dest: '<%= project.dirs.styles.outCompiled %>',
                     ext: '.css'
                 }]
             },
@@ -129,18 +158,41 @@ module.exports = function (grunt) {
             images: {
                 expand: true,
                 cwd: '<%= project.dirs.images.main %>',
-                src: ['**/*.{png,jpg,gif,svg,ico}', '!icons/**', '!sprite/**'],
+                src: ['**/*.{png,jpg,gif,svg,ico}', '!icons/**', '!sprite/**', '!no-deploy/**'],
                 dest: '<%= project.dirs.images.out %>'
+            },
+            imagesCompiled: {
+                expand: true,
+                cwd: '<%= project.dirs.images.main %>',
+                src: ['**/*.{png,jpg,gif,svg,ico}', '!icons/**', '!sprite/**'],
+                dest: '<%= project.dirs.images.outCompiled %>'
             },
             fonts: {
                 expand: true,
                 cwd: '<%= project.dirs.fonts.main %>',
-                src: ['**/*{eot,svg,ttf,woff,woff2}'],
+                src: ['**/*{eot,svg,ttf,woff,woff2,css,js}'],
                 dest: '<%= project.dirs.fonts.out %>'
+            },
+            fontsCompiled: {
+                expand: true,
+                cwd: '<%= project.dirs.fonts.main %>',
+                src: ['**/*{eot,svg,ttf,woff,woff2,css,js}'],
+                dest: '<%= project.dirs.fonts.outCompiled %>'
+            },
+            videos: {
+                expand: true,
+                cwd: '<%= project.dirs.videos.main %>',
+                src: ['**'],
+                dest: '<%= project.dirs.videos.out %>'
+            },
+            videosCompiled: {
+                expand: true,
+                cwd: '<%= project.dirs.videos.main %>',
+                src: ['**'],
+                dest: '<%= project.dirs.videos.outCompiled %>'
             }
         },
         
-
         requirejs: {
             options: {
                 baseUrl: '<%= project.dirs.scripts.main %>',
@@ -153,18 +205,21 @@ module.exports = function (grunt) {
                     out: '<%= project.dirs.scripts.out %>/scripts.js',
                     name: '../../node_modules/almond/almond',
                     include: ['require-config', 'main'].concat(helpers.getIncludeAliases(helpers.getIncludes(requireConfig, project.dirs.scripts.main))),
-                    //include: ['require-config', 'main'],
                     insertRequire: ['main'],
                     paths: {
-                        'jquery': 'lib/jquery'
+                        //'jquery': 'lib/jquery',
+                        //'videojs': 'lib/videojs',
+                        //'moment':'lib/moment'
                     }
                 }
             },
             dev: {
                 options: {
-                    dir: '<%= project.dirs.scripts.out %>',
+                    dir: '<%= project.dirs.scripts.outCompiled %>',
                     paths: {
-                        'jquery': 'empty'
+                        //'jquery': 'empty',
+                        //'videojs': 'empty',
+                        //'moment': 'empty'
                     }
                 }
             }
@@ -216,7 +271,6 @@ module.exports = function (grunt) {
             scripts: ['<%= project.dirs.scripts.out %>/**/*'],
             templates: ['<%= project.dirs.scripts.templates %>/*'],
             fonts: ['<%= project.dirs.fonts.out %>/*']
-            //videos: ['<%= project.dirs.videos.out %>/*']
         },
         
         watch: {
@@ -229,54 +283,64 @@ module.exports = function (grunt) {
                 	'<%= project.dirs.base %>/**/*.hbs',
                     '<%= project.dirs.static.data %>/**/*.json'
                 ],
-                tasks: ['static']
+                tasks: ['hbs']
             },
             styles: {
                 files: [
 					'<%= project.dirs.styles.main %>/**/*.scss',
 					'<%= project.dirs.styles.partials %>/**/*.scss'
                 ],
-                tasks: ['css']
+                tasks: ['css-dev']
             },
             scripts: {
                 files: [
 					'<%= project.dirs.scripts.main %>/**/*.js',
 					'!<%= project.dirs.scripts.lib %>/**'
                 ],
-                tasks: ['js']
+                tasks: ['js-dev']
             },
             images: {
                 files: [
 					'<%= project.dirs.images.main %>/**/*'
                 ],
-                tasks: ['img']
+                tasks: ['copy:imagesCompiled']
             }
         }
     });
+
+    // Clean tasks
+    grunt.registerTask('clean-dev', ['clean:static', "clean:templates"]);
+
+    grunt.registerTask('clean-deploy', ['clean:styles', "clean:images", "clean:scripts", "clean:fonts", "clean:templates"]);
     
     // CSS Tasks
-    grunt.registerTask('css', ["sass:dev", "autoprefixer"]);
+    grunt.registerTask('css-dev', ["sass:dev","autoprefixer"]);
+
+    grunt.registerTask('css-deploy', ["sass:deploy","autoprefixer","cssmin"]);
 
     // JavaScript Tasks
-    grunt.registerTask('js', ["handlebars", "requirejs:dev"]);
+    grunt.registerTask('js-dev', ["handlebars", "requirejs:dev"]);
 
-    // Image Tasks
-    grunt.registerTask('img', ["copy"]);
+    grunt.registerTask('js-deploy', ["handlebars", "requirejs:deploy", "uglify"]);
+
+    // Copy tasks
+    grunt.registerTask('copy-dev', ["copy:imagesCompiled", "copy:fontsCompiled", "copy:videosCompiled"]);
+
+    grunt.registerTask('copy-deploy', ["copy:images", "copy:fonts", "copy:videos"]);
 
     // Static Tasks
-    grunt.registerTask('static', ['assemble']);
+    grunt.registerTask('hbs', ['assemble']);
 
+    grunt.registerTask('clone-bower', ["bowercopy:deps"]);
 
-    grunt.registerTask('install', ["bowercopy:deps"]);
-    
-    grunt.registerTask('deployjs', ["requirejs:deploy", "uglify"]);
-    grunt.registerTask('deploycss', ["cssmin"]);
+    // Build Tasks
+    grunt.registerTask('build-frontend', ['clean-dev', 'hbs', "css-dev", "js-dev", 'copy-dev', "watch"]);
 
-    //grunt.registerTask('build', ['clean', 'assemble', "sass:dev", "cssmin", "requirejs:dev", "copy","watch"]);
-    grunt.registerTask('build', ['clean', 'static', "css", "js", "copy"]);
+    grunt.registerTask('build-deploy', ['clean-deploy', 'css-deploy', 'js-deploy', 'copy-deploy']);
+
 
     // default task when calling "grunt" => call task build
-    grunt.registerTask('default', ['build']);
+    grunt.registerTask('default', ['build-frontend']);
 
-    grunt.registerTask('deploy', ['deployjs', 'deploycss']);
+    grunt.registerTask('deploy', ['build-deploy']);
 };
