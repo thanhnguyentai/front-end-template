@@ -294,42 +294,22 @@ gulp.task('copy-deploy', ["copy:images", "copy:fonts", "copy:videos"]);
 
 // Static Tasks =================>
 
-gulp.task('hbs', function() {
+gulp.task('assemble', function() {
 	var app = assemble();
+	
 	app.data(project.dirs.base + '/data/**/*.json');
-	// app.option('layoutdir', project.dirs.views.layouts);
-  	// app.option('partials', project.dirs.views.partials + "/**/*.hbs");
-	app.option('layout', 'view.hbs');
-
-	// app.src(project.dirs.views.main + "/*.hbs")
-	// .pipe(app.renderFile("hbs"))
-	// .pipe(app.dest(project.dirs.static.main));
-
-
 	app.partials(project.dirs.views.partials + "/**/*.hbs");
 	app.layouts(project.dirs.views.layouts + '/*.hbs');
-	// app.pages(project.dirs.views.main + "/*.hbs");
-	// app.data(project.dirs.base + '/data/**/*.json');
+	app.pages([project.dirs.views.main + "/[!404,!_]*.hbs"]);
+	
+	app.option({
+		layout: "view"
+	});
 
-	// app.option('partials', project.dirs.views.partials + "/**/*.hbs");
-	// app.option('layoutdir', project.dirs.views.layouts);
-	// app.option('layout', 'view.hbs');
-	// app.option('data', project.dirs.base + '/data/**/*.json');
-
-	app.src(project.dirs.views.main + "/*.hbs")
-	.pipe(app.renderFile())
-	.pipe(app.dest(project.dirs.static.main));
-
-	// var app = plugins.assemble;
-
-	// gulp.src(project.dirs.views.main + "/*.hbs")
-	// .pipe(app('my-task', {
-	// 	layoutdir: project.dirs.views.layouts,
-	// 	partials: project.dirs.views.partials  + '/**/*.hbs',
-	// 	data: project.dirs.base + '/data/**/*.json', 
-	// 	layout: 'view.hbs'
-	// }))
-	// .pipe(gulp.dest(project.dirs.static.main));
+	return app.toStream("pages")
+			.pipe(app.renderFile())
+			.pipe(plugins.extname())
+			.pipe(app.dest(project.dirs.static.main));
 
 });
 
@@ -337,7 +317,7 @@ gulp.task('clone-bower', ["bowercopy:deps"]);
 
 // Build Tasks =================>
 gulp.task('build-frontend', function(done) {
-	runSequence('clean-dev', ['hbs', "css-dev", "js-dev", 'copy-dev'], "watch");
+	runSequence('clean-dev', ['assemble', "css-dev", "js-dev", 'copy-dev'], "watch");
 });
 
 gulp.task('build-deploy', ['clean-deploy', 'css-deploy', 'js-deploy', 'copy-deploy']);

@@ -1,4 +1,4 @@
-﻿{
+{
     "paths": [
         { "id": "Home Page", "path": "home.html" },
         { "id": "404", "path": "404.html" },
