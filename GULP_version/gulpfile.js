@@ -26,12 +26,19 @@ var gulp 		 = require("gulp"),
 	runSequence  = require("run-sequence"),
 	del          = require("del"),
 	w3cjs        = require("w3cjs"),
-	path 		 = require('path');
+	path 		 = require('path'),
 	// gw3cjs		 = require("gulp-w3cjs");
+
+	loadGulpTask = require('load-gulp-tasks');
 
 var plugins = require("gulp-load-plugins")();
 var project = require('./Gulpproject.js');
 var helpers = require('./Gulphelpers.js')(false);
+
+var options = {
+	project: project,
+	helpers: helpers
+};
 
 var optimize = true;
 
@@ -235,29 +242,7 @@ gulp.task('default', ["deploy"]);
 
 /*================== All taskes will be registered here ======================*/
 
-// Clean tasks =================>
-gulp.task('clean-static', function(done) {
-	return del(project.dirs.static.main + "/*");
-});
-gulp.task('clean-templates', function(done) {
-	return del(project.dirs.scripts.templates + "/*");
-});
-gulp.task('clean-styles', function(done) {
-	return del(project.dirs.styles.out + "/*");
-});
-gulp.task('clean-images', function(done) {
-	return del(project.dirs.images.out + "/*");
-});
-gulp.task('clean-scripts', function(done) {
-	return del(project.dirs.scripts.out + "/*");
-});
-gulp.task('clean-fonts', function(done) {
-	return del(project.dirs.fonts.out + "/*");
-});
-
-gulp.task('clean-dev', ['clean-static', "clean-templates"]);
-
-gulp.task('clean-deploy', ['clean-styles', "clean-images", "clean-scripts", "clean-fonts", "clean-templates"]);
+loadGulpTask(gulp, options);
 
 
 // CSS Tasks =================>
@@ -293,94 +278,10 @@ gulp.task('js-deploy', ["handlebars", "requirejs:deploy", "uglify"]);
 
 
 
-// Copy tasks =================>
+// Copy Tasks =================>
 gulp.task('copy-dev', ["copy:imagesCompiled", "copy:fontsCompiled", "copy:videosCompiled"]);
 
 gulp.task('copy-deploy', ["copy:images", "copy:fonts", "copy:videos"]);
-
-
-
-// Static Tasks =================>
-
-gulp.task('assemble-static', function() {
-	var app = assemble();
-	
-	app.option({
-		layout: "static"
-	});
-
-	app.data(path.join(project.dirs.base, 'data/**/*.json'));
-	app.partials(path.join(project.dirs.views.partials, "**/*.hbs"));
-	app.layouts(path.join(project.dirs.views.layouts, '*.hbs'));
-
-	return app.src(path.join(project.dirs.base, "index.hbs"))
-			.pipe(app.renderFile())
-			.pipe(plugins.extname())
-			.pipe(app.dest(project.dirs.static.main));
-});
-
-gulp.task('assemble-view', function() {
-	var app = assemble();
-	
-	app.option({
-		layout: "view"
-	});
-
-	app.data(path.join(project.dirs.base, 'data/**/*.json'));
-	app.partials(path.join(project.dirs.views.partials, "**/*.hbs"));
-	app.layouts(path.join(project.dirs.views.layouts, '*.hbs'));
-	
-	/*
-		This code works well,
-		but in case like 
-		app.pages(path.join(project.dirs.views.main, 404.hbs")) or
-		app.page(path.join(project.dirs.views.main, 404.hbs"))
-		the output will put at a WRONG PLACE,
-
-		to make it work right, change it to
-		app.pages(path.join(project.dirs.views.main, 404*.hbs"))
-		SO STRANGE
-
-		app.pages(path.join(project.dirs.views.main, "[!404,!_]*.hbs"));
-		return app.toStream("pages")
-				.pipe(app.renderFile())
-				.pipe(plugins.extname())
-				.pipe(app.dest(project.dirs.static.main));
-
-	*/ 
-
-	return app.src(path.join(project.dirs.views.main, "[!404,!_]*.hbs"))
-			.pipe(app.renderFile())
-			.pipe(plugins.extname())
-			.pipe(app.dest(project.dirs.static.main));
-
-});
-
-gulp.task('assemble-404', function() {
-	var app = assemble();
-	
-	app.option({
-		layout: "404"
-	});
-
-	app.data(path.join(project.dirs.base, 'data/**/*.json'));
-	app.partials(path.join(project.dirs.views.partials, "**/*.hbs"));
-	app.layouts(path.join(project.dirs.views.layouts, '*.hbs'));
-
-	return app.src(path.join(project.dirs.views.main, "404.hbs"))
-			.pipe(app.renderFile())
-			.pipe(plugins.extname())
-			.pipe(app.dest(project.dirs.static.main));
-
-});
-
-gulp.task('assemble', ['assemble-static', 'assemble-view', 'assemble-404']);
-
-
-
-// Bower Task ==================>
-gulp.task('clone-bower', ["bowercopy:deps"]);
-
 
 
 // Build Tasks =================>
