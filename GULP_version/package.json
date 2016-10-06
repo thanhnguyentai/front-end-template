@@ -9,7 +9,6 @@
   "license": "ISC",
   "devDependencies": {
     "assemble": "^0.17.1",
-    "autoprefixer": "^6.3.7",
     "browser-sync": "^2.13.0",
     "cssnano": "^3.7.1",
     "del": "^2.2.1",
@@ -26,6 +25,7 @@
     "load-gulp-tasks": "^0.1.0",
 
     "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.1",
     "gulp-babel": "^6.1.2",
     "gulp-sass": "^2.3.2",
     "gulp-extname": "^0.2.2",
