@@ -6,10 +6,10 @@
 
 #Compiled
 **/compiled
-./css
-./js
-./GULP_verion/css
-./GULP_verion/js
+css
+js
+GULP_verion/css
+GULP_verion/js
 
 #Bower copy
 **/lib/bower
