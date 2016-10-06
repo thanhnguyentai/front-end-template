@@ -331,7 +331,7 @@ module.exports = function (grunt) {
     // Static Tasks
     grunt.registerTask('hbs', ['assemble']);
 
-    grunt.registerTask('clone-bower', ["bowercopy:deps"]);
+    grunt.registerTask('bower-copy', ["bowercopy:deps"]);
 
     // Build Tasks
     grunt.registerTask('build-frontend', ['clean-dev', 'hbs', "css-dev", "js-dev", 'copy-dev', "watch"]);
