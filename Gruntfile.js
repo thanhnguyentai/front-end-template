@@ -145,6 +145,9 @@ module.exports = function (grunt) {
         },
         
         cssmin: {
+            options: {
+                keepSpecialComments: 0
+            },
             all: {
                 expand: true,
                 cwd: '<%= project.dirs.styles.out %>',
