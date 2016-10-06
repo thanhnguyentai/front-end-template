@@ -7,6 +7,9 @@
 #Compiled
 **/compiled
 
+#Bower copy
+**/lib/bower
+
 #OS junk files
 [Tt]humbs.db
 *.DS_Store
