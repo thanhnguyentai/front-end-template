@@ -25,7 +25,8 @@ var gulp 		 = require("gulp"),
 	autoprefixer = require("autoprefixer"),
 	runSequence  = require("run-sequence"),
 	del          = require("del"),
-	w3cjs        = require("w3cjs");
+	w3cjs        = require("w3cjs"),
+	path 		 = require('path');
 	// gw3cjs		 = require("gulp-w3cjs");
 
 var plugins = require("gulp-load-plugins")();
@@ -258,6 +259,7 @@ gulp.task('clean-dev', ['clean-static', "clean-templates"]);
 
 gulp.task('clean-deploy', ['clean-styles', "clean-images", "clean-scripts", "clean-fonts", "clean-templates"]);
 
+
 // CSS Tasks =================>
 gulp.task("sass-dev", function () {
 	var processors = [
@@ -282,38 +284,104 @@ gulp.task('css-dev', function(done) {
 
 gulp.task('css-deploy', ["sass:deploy","autoprefixer","cssmin"]);
 
+
+
 // JavaScript Tasks =================>
 gulp.task('js-dev', ["handlebars", "requirejs:dev"]);
 
 gulp.task('js-deploy', ["handlebars", "requirejs:deploy", "uglify"]);
+
+
 
 // Copy tasks =================>
 gulp.task('copy-dev', ["copy:imagesCompiled", "copy:fontsCompiled", "copy:videosCompiled"]);
 
 gulp.task('copy-deploy', ["copy:images", "copy:fonts", "copy:videos"]);
 
+
+
 // Static Tasks =================>
 
-gulp.task('assemble', function() {
+gulp.task('assemble-static', function() {
 	var app = assemble();
 	
-	app.data(project.dirs.base + '/data/**/*.json');
-	app.partials(project.dirs.views.partials + "/**/*.hbs");
-	app.layouts(project.dirs.views.layouts + '/*.hbs');
-	app.pages([project.dirs.views.main + "/[!404,!_]*.hbs"]);
+	app.option({
+		layout: "static"
+	});
+
+	app.data(path.join(project.dirs.base, 'data/**/*.json'));
+	app.partials(path.join(project.dirs.views.partials, "**/*.hbs"));
+	app.layouts(path.join(project.dirs.views.layouts, '*.hbs'));
+
+	return app.src(path.join(project.dirs.base, "index.hbs"))
+			.pipe(app.renderFile())
+			.pipe(plugins.extname())
+			.pipe(app.dest(project.dirs.static.main));
+});
+
+gulp.task('assemble-view', function() {
+	var app = assemble();
 	
 	app.option({
 		layout: "view"
 	});
 
-	return app.toStream("pages")
+	app.data(path.join(project.dirs.base, 'data/**/*.json'));
+	app.partials(path.join(project.dirs.views.partials, "**/*.hbs"));
+	app.layouts(path.join(project.dirs.views.layouts, '*.hbs'));
+	
+	/*
+		This code works well,
+		but in case like 
+		app.pages(path.join(project.dirs.views.main, 404.hbs")) or
+		app.page(path.join(project.dirs.views.main, 404.hbs"))
+		the output will put at a WRONG PLACE,
+
+		to make it work right, change it to
+		app.pages(path.join(project.dirs.views.main, 404*.hbs"))
+		SO STRANGE
+
+		app.pages(path.join(project.dirs.views.main, "[!404,!_]*.hbs"));
+		return app.toStream("pages")
+				.pipe(app.renderFile())
+				.pipe(plugins.extname())
+				.pipe(app.dest(project.dirs.static.main));
+
+	*/ 
+
+	return app.src(path.join(project.dirs.views.main, "[!404,!_]*.hbs"))
 			.pipe(app.renderFile())
 			.pipe(plugins.extname())
 			.pipe(app.dest(project.dirs.static.main));
 
 });
 
+gulp.task('assemble-404', function() {
+	var app = assemble();
+	
+	app.option({
+		layout: "404"
+	});
+
+	app.data(path.join(project.dirs.base, 'data/**/*.json'));
+	app.partials(path.join(project.dirs.views.partials, "**/*.hbs"));
+	app.layouts(path.join(project.dirs.views.layouts, '*.hbs'));
+
+	return app.src(path.join(project.dirs.views.main, "404.hbs"))
+			.pipe(app.renderFile())
+			.pipe(plugins.extname())
+			.pipe(app.dest(project.dirs.static.main));
+
+});
+
+gulp.task('assemble', ['assemble-static', 'assemble-view', 'assemble-404']);
+
+
+
+// Bower Task ==================>
 gulp.task('clone-bower', ["bowercopy:deps"]);
+
+
 
 // Build Tasks =================>
 gulp.task('build-frontend', function(done) {
@@ -321,6 +389,7 @@ gulp.task('build-frontend', function(done) {
 });
 
 gulp.task('build-deploy', ['clean-deploy', 'css-deploy', 'js-deploy', 'copy-deploy']);
+
 
 
 // default task when calling "gulp"  =================>
