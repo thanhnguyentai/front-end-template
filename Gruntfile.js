@@ -4,7 +4,7 @@ module.exports = function (grunt) {
 
     var jit = require('jit-grunt')(grunt);
     var project = require('./Gruntproject.js');
-    var helpers = require('./GruntHelpers.js')(false);
+    var helpers = require('./Grunthelpers.js')(false);
     var path = require('path');
     var requireConfig = require('./' + path.join(project.dirs.scripts.main, 'require-config.js'));
     
