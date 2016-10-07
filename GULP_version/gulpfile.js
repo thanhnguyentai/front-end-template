@@ -245,32 +245,6 @@ gulp.task('default', ["deploy"]);
 loadGulpTask(gulp, options);
 
 
-// CSS Tasks =================>
-gulp.task("sass-dev", function () {
-	var processors = [
-		autoprefixer({
-			browsers: ['last 2 versions', 'ie 9']
-		})
-	];
-	return gulp.src(project.dirs.styles.main + "/*.scss")
-		.pipe(sourcemaps.init())
-		.pipe(sass({
-			includePaths: [
-				project.dirs.styles.main,
-				project.dirs.styles.partials
-			]
-		}).on("error", sass.logError))
-		// .pipe(sourcemaps.write())
-		.pipe(gulp.dest(project.dirs.styles.outCompiled));
-});
-gulp.task('css-dev', function(done) {
-	runSequence("sass:dev",["autoprefixer"]);
-});
-
-gulp.task('css-deploy', ["sass:deploy","autoprefixer","cssmin"]);
-
-
-
 // JavaScript Tasks =================>
 gulp.task('js-dev', ["handlebars", "requirejs:dev"]);
 
