@@ -1,9 +1,7 @@
 var gulp 		 = require("gulp"),
 	fs  	  	 = require("fs"),
 	runSequence  = require("run-sequence"),
-	w3cjs        = require("w3cjs"),
 	path 		 = require('path'),
-	gw3cjs		 = require("gulp-w3cjs"),
 	loadGulpTask = require('load-gulp-tasks');
 
 var plugins = require("gulp-load-plugins")();
