@@ -54,7 +54,6 @@
     "gulp-uglify": "^2.0.0",
     "gulp-util": "^3.0.7",
     "gulp-w3cjs": "^1.2.0",
-    "gulp-watch": "^4.3.8",
     "run-sequence": "^1.2.2",
     "w3cjs": "^0.3.0"
   }
