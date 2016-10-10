@@ -1,7 +1,5 @@
 
 
-var plugins = require("gulp-load-plugins")();
-
 var runSequence  = require("run-sequence");
 var path 	     = require('path');
 

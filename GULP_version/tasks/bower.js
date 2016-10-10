@@ -1,8 +1,5 @@
 
 
-// user gulp-main-bower-files, gulp-flatten, gulp-rename
-
-var plugins = require("gulp-load-plugins")();
 
 module.exports = function(gulp, options, plugins) {
 

@@ -1,9 +1,5 @@
 
 
-// user gulp-sass, gulp-sourcemaps
-
-var plugins = require("gulp-load-plugins")();
-
 module.exports = function(gulp, options, plugins) {
 
     var project = options.project;

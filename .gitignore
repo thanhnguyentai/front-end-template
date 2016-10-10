@@ -8,8 +8,14 @@
 **/compiled
 css
 js
+fonts/
+img/
+videos/
 GULP_verion/css
 GULP_verion/js
+GULP_verion/fonts
+GULP_verion/img
+GULP_verion/videos
 
 #Bower copy
 **/lib/bower

@@ -3,9 +3,6 @@
 var assemble = require("assemble"),
 	path 	 = require('path');
 
-// use gulp-extname
-var plugins = require("gulp-load-plugins")();
-
 module.exports = function(gulp, options, plugins) {
 
     var project = options.project;
