@@ -8,6 +8,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "almond": "^0.3.3",
     "assemble": "^0.17.1",
     "browser-sync": "^2.13.0",
     "cssnano": "^3.7.1",
@@ -30,7 +31,9 @@
     "gulp-sass": "^2.3.2",
     "gulp-extname": "^0.2.2",
     "gulp-flatten": "^0.3.1",
-    "gulp-amd-optimizer": "^0.5.0",
+    "gulp-requirejs-optimize": "^1.2.0",
+    "gulp-handlebars": "^4.0.0",
+    "gulp-define-module": "^0.1.4",
     "gulp-main-bower-files": "^1.5.3",
     "gulp-rename": "^1.2.2",
     "gulp-sourcemaps": "^1.6.0",

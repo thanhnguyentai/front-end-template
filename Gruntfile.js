@@ -324,7 +324,8 @@ module.exports = function (grunt) {
     // JavaScript Tasks
     grunt.registerTask('js-dev', ["handlebars", "requirejs:dev"]);
 
-    grunt.registerTask('js-deploy', ["handlebars", "requirejs:deploy", "uglify"]);
+    // grunt.registerTask('js-deploy', ["handlebars", "requirejs:deploy", "uglify"]);
+    grunt.registerTask('js-deploy', ["handlebars", "requirejs:deploy"]);
 
     // Copy tasks
     grunt.registerTask('copy-dev', ["copy:imagesCompiled", "copy:fontsCompiled", "copy:videosCompiled"]);

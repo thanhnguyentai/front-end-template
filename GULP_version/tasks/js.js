@@ -4,13 +4,25 @@ var plugins = require("gulp-load-plugins")();
 
 var runSequence  = require("run-sequence");
 var path 	     = require('path');
-var fs  	  	 = require("fs");
 
 module.exports = function(gulp, options, plugins) {
 
     var project = options.project;
+    var helpers = options.helpers;
 
     gulp.task('handlebars', function() {
+        return gulp.src(path.join(project.dirs.views.partials, "**/precompile/*.hbs"))
+        .pipe(plugins.handlebars())
+        .pipe(plugins.defineModule('amd', {
+            namespace: false,
+            require: {
+                Handlebars: 'vendor/handlebars', 
+                HandlebarsHelper: 'vendor/handlebars-helpers', 
+                HandlebarsExtension: 'base/modules/handlebars-extension'
+            }
+        }))
+        .pipe(plugins.flatten())
+        .pipe(gulp.dest(project.dirs.scripts.templates));
     });
 
     gulp.task("require:dev", function() {
@@ -18,68 +30,21 @@ module.exports = function(gulp, options, plugins) {
         .pipe(gulp.dest(project.dirs.scripts.outCompiled));
 	});
 
-    gulp.task("js-deploy:copy", function() {
-        return gulp.src(path.join(project.dirs.scripts.main, "**/*.js"))
-        .pipe(gulp.dest(project.dirs.scripts.out));
-    });
-
     gulp.task("require:deploy", function() {
-        var requireConfig = {
-            baseUrl: 'js',
-            paths: {
-                base: 'src',
-                jquery: 'lib/jquery',
-                videojs: 'lib/video',
-                youtube_video_js: 'lib/Youtube',
-                moment: 'lib/moment',
-                underscore: 'lib/bower/underscore',
-                backbone: 'lib/bower/backbone',
-                vendor: 'lib/bower',
-                templates: 'templates',
-                pikaday: 'lib/pikaday',
-            },
-            map: {
-                '*': {
-                    'handlebars': 'vendor/handlebars',
-                    'velocity': 'vendor/velocity'
-                }
-            },
-            shim: {
-                'vendor/handlebars': {
-                    exports: 'Handlebars'
-                },
-                'lib/owl.carousel': {
-                    exports: 'jQuery.fn.owlCarousel',
-                    deps: [
-                        'jquery'
-                    ]
-                },
-                'lib/pikaday.jquery': {
-                    deps: [
-                        'jquery',
-                        'moment'
-                    ]
-                },
-                'lib/jquery.fancybox': {
-                    deps: [
-                        'jquery'
-                    ]
-                },
-                'lib/jquery.fancybox-buttons': {
-                    deps: [
-                        'jquery'
-                    ]
-                }
-            }
-        };
+        var requireConfigFile = require("../" + path.join(project.dirs.scripts.main, 'require-config.js'));
 
-        var options = {
-            umd: false
-        };
+        var requireConfig = {};
 
+        requireConfig.name           = "../../node_modules/almond/almond";
+        requireConfig.baseUrl        = project.dirs.scripts.main;
+        requireConfig.mainConfigFile = path.join(project.dirs.scripts.main, 'require-config.js');
+        requireConfig.insertRequire  = ["main"];
+        requireConfig.optimize       = "none";
+        requireConfig.wrap           = true;
+        requireConfig.include        = ['require-config', 'main'].concat(helpers.getIncludeAliases(helpers.getIncludes(requireConfigFile, project.dirs.scripts.main)));
 
-        return gulp.src(path.join(project.dirs.scripts.main, "**/*.js"))
-        .pipe(plugins.amdOptimizer(requireConfig, options))
+        return gulp.src(path.join(project.dirs.scripts.main, "main.js")) 
+        .pipe(plugins.requirejsOptimize(requireConfig))
         .pipe(plugins.concat("scripts.js"))
         // .pipe(plugins.uglify())
         .pipe(gulp.dest(project.dirs.scripts.out));
@@ -91,6 +56,6 @@ module.exports = function(gulp, options, plugins) {
     });
 
 	gulp.task("js:deploy", function() {
-        runSequence('handlebars','js-deploy:copy', 'require:deploy');
+        runSequence('handlebars','require:deploy');
     });
 }
