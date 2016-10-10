@@ -1,7 +1,6 @@
 
 
 var assemble = require("assemble"),
-	fs  	 = require("fs"),
 	path 	 = require('path');
 
 // use gulp-extname
