@@ -224,21 +224,6 @@ gulp.task("vendor-js", function () {
 	.pipe(gulp.dest(paths.dist + "js/"));
 });
 
-gulp.task("test", ["watch"], function () {
-	browserSync.init({
-		server: {
-			baseDir: ["./_compiled/", "./"]
-		}
-	});
-});
-
-gulp.task("deploy", function (done) {
-	optimize = true;
-	runSequence("clean", ["sass", "jade", "vendor-js", "images", "fonts", "copyJS"], ["replace"], ["prettify"], done);
-});
-
-gulp.task('default', ["deploy"]);
-
 
 /*================== All taskes will be registered here ======================*/
 
@@ -259,15 +244,17 @@ gulp.task('copy-deploy', ["copy:images", "copy:fonts", "copy:videos"]);
 
 
 // Build Tasks =================>
-gulp.task('build-frontend', function(done) {
-	runSequence('clean-dev', ['assemble', "css-dev", "js-dev", 'copy-dev'], "watch");
+gulp.task('build-dev', function(done) {
+	runSequence('clean-dev', ['assemble', "css:dev", "js:dev", 'copy:dev']);
 });
 
-gulp.task('build-deploy', ['clean-deploy', 'css-deploy', 'js-deploy', 'copy-deploy']);
+gulp.task('build-deploy', function() {
+	runSequence('clean-deploy', ['css:deploy', 'js:deploy', 'copy:deploy'])
+});
 
 
 
 // default task when calling "gulp"  =================>
-gulp.task('default', ['build-frontend']);
+gulp.task('default', ['build-dev']);
 
 gulp.task('deploy', ['build-deploy']);
